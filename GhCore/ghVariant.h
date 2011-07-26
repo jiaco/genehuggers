@@ -59,10 +59,27 @@ inline	QColor	CLR( const QVariant& v )
 {
 	return( v.value<QColor>() );
 }
+inline	QFont	FONT( const QVariant& v )
+{
+	return( v.value<QFont>() );
+}
+inline	QString	FONTSTRING( const QFont& font )
+{
+	QString rv = QString( "%1,%2,%3" )
+		.arg( font.family() ).arg( font.pointSize() )
+		.arg( font.weight() );
+	if( font.italic() ) {
+		rv.append( ",italic" );
+	}
+	return( rv );
+}
 inline	QString	V2S( const QVariant& v, const QString& sep = "," )
 {
 	if( v.type() == QVariant::Color ) {
 		return( CLR( v ).name() );
+	} else if( v.type() == QVariant::Font ) {
+		return( FONTSTRING( FONT( v  )) );
+		//return( FONT( v ).toString() );
 	} else if( v.type() == QVariant::StringList ) {
 		return( SL( v ).join( sep ) );
 	} else {

@@ -19,7 +19,7 @@ class	GH_DLL_EXPORT	CliApp	:	public	QObject, public Errorprone
 public:
 	CliApp( int argc, char** argv );
 
-	QStringList	paramNames() const;
+	QStringList	paramNames( const QString& subgroup = QString() ) const;
 	ParamModel*	param( const QString& name ) const;
 	ParamModel*	param( const QString& name );
 	void	addParam( const QString& name, ParamModel* param );
@@ -38,6 +38,8 @@ public:
 
 	void	showError() const;
 	void	setRequiredParamNames( const QStringList& names );
+public slots:
+	void	resetDefaults();
 signals:
 	void	emitError( const Error& error ) const;
 	void	emitError( Error* error ) const;

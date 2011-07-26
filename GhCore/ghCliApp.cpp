@@ -41,9 +41,20 @@ void	CliApp::addParam( const QString& name, const QVariant& value,
 {
 	addParam( name, new ParamModel( name, value, type, displayName ) );
 }
-QStringList	CliApp::paramNames() const
+QStringList	CliApp::paramNames( const QString& subgroup ) const
 {
-	return( _paramNames );
+	if( subgroup.isEmpty() ) {
+		return( _paramNames );
+	} else {
+		QStringList	rv;
+		foreach( QString pname, _paramNames ) {
+			QStringList tok = pname.split( '/' );
+			if( tok.size() > 0 && tok.at( 0 ) == subgroup ) {
+				rv << pname;
+			}
+		}
+		return( rv );
+	}
 }
 ParamModel*	CliApp::param( const QString& name ) const
 {
@@ -60,6 +71,12 @@ ParamModel::ParamType	CliApp::paramType( const QString& name )
 void	CliApp::setParamValue( const QString& name, const QVariant& value )
 {
 	_param[ name ]->setValue( value );
+}
+void	CliApp::resetDefaults()
+{
+	foreach( QString name, paramNames() ) {
+		_param[ name ]->resetDefault();
+	}
 }
 	//
 	//	OLD INTERFACE

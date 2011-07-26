@@ -1,0 +1,31 @@
+HEADERS +=\
+	ghParamView.h	\
+	ghActionView.h	\
+	ghEditView.h	\
+	ghFileView.h	\
+	ghColorView.h	\
+	ghFontView.h	\
+	ghBooleanView.h	\
+	ghChoiceView.h	\
+	ghMainWindow.h	\
+	ghHeatMap.h	\
+	ghListModel.h	\
+	ghGuiCommon.h	\
+	ghFutureDialog.h \
+	ghImageWidget.h \
+	ghLogWidget.h \
+	ghScene.h \
+	ghTableData.h \
+	ghTableModel.h \
+	ghTableView.h \
+	ghHeaderView.h	\
+	ghTableWidget.h \
+	ghGridWidget.h \
+	ghView.h \
+	ghStringListDialog.h	\
+	ghVariantMapDialog.h	\
+	ghVariantListDialog.h	\
+	ghTableDialog.h	\
+	ghGuiDac.h	\
+	ghGuiDacUtils.h	\
+	GhGui.h

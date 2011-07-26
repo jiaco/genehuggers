@@ -1,0 +1,41 @@
+/* empty stylesheet */
+/*
+QWidget {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: rgb( 255, 0, 255 );
+}
+*/
+QPushButton {
+	background-color: rgb( 255, 0, 255 );
+}
+QFrame {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+#wrapper {
+	background-color: rgb( 0, 0, 255 );
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+#EditParam > QLabel {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: rgb( 0, 0, 255 );
+}
+#EditParam > QLineEdit {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: rgb( 0, 255, 0 );
+}
+#EditParam > QWidget {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: rgb( 255, 0, 0 );
+}

@@ -1,0 +1,40 @@
+<RCC>
+<qresource>
+    <file>style/nostyle.qss</file>
+    <file>style/coffee.qss</file>
+    <file>style/default.qss</file>
+    <file>style/pagefold.qss</file>
+    <file>style/mpjfc.qss</file>
+    <file>style/mpjfc_win.qss</file>
+    <file>style/images/pagefold.png</file>
+    <file>style/images/frame.png</file>
+    <file>style/images/radiobutton_unchecked.png</file>
+    <file>style/images/radiobutton_unchecked_pressed.png</file>
+    <file>style/images/radiobutton_unchecked_hover.png</file>
+    <file>style/images/radiobutton_checked.png</file>
+    <file>style/images/radiobutton_checked_pressed.png</file>
+    <file>style/images/radiobutton_checked_hover.png</file>
+    <file>style/images/pushbutton.png</file>
+    <file>style/images/pushbutton_hover.png</file>
+    <file>style/images/pushbutton_pressed.png</file>
+    <file>style/images/checkbox_unchecked.png</file>
+    <file>style/images/checkbox_unchecked_pressed.png</file>
+    <file>style/images/checkbox_unchecked_hover.png</file>
+    <file>style/images/checkbox_checked.png</file>
+    <file>style/images/checkbox_checked_pressed.png</file>
+    <file>style/images/checkbox_checked_hover.png</file>
+    <file>style/images/down_arrow.png</file>
+    <file>style/images/down_arrow_disabled.png</file>
+    <file>style/images/up_arrow.png</file>
+    <file>style/images/up_arrow_disabled.png</file>
+    <file>style/images/sizegrip.png</file>
+    <file>style/images/spinup.png</file>
+    <file>style/images/spinup_off.png</file>
+    <file>style/images/spinup_hover.png</file>
+    <file>style/images/spinup_pressed.png</file>
+    <file>style/images/spindown.png</file>
+    <file>style/images/spindown_off.png</file>
+    <file>style/images/spindown_hover.png</file>
+    <file>style/images/spindown_pressed.png</file>
+</qresource>
+</RCC>

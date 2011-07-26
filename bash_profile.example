@@ -1,0 +1,10 @@
+#
+#       setup GeneHuggers
+#
+export GH_HOME=$HOME/src/genehuggers/
+export GH_VER=`head -1 $GH_HOME/ghversion.pri | awk '{print $2}'`
+export GH_BIN=/usr/local/bin/gh.$GH_VER
+export GH_INC=/usr/local/include/gh.$GH_VER
+export GH_LIB=/usr/local/lib/gh.$GH_VER
+PATH=$GH_BIN:$PATH
+export LD_LIBRARY_PATH=$GH_LIB:$LD_LIBRARY_PATH

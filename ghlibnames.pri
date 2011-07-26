@@ -1,0 +1,6 @@
+CORE_LIB=GhCore
+BIO_LIB=GhBio
+FOLD_LIB=GhFold
+GUI_LIB=GhGui
+DB_LIB=GhDbase
+SALSA_LIB=GhSalsa

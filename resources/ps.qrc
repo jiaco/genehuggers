@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>ps/header.ps</file>
+	<file>ps/footer.ps</file>
+</qresource>
+</RCC>

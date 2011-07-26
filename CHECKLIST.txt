@@ -1,0 +1,27 @@
+GhCore
+
+ghApp		+	used as a base class for CLI and GUI-myApp
+ghData
+ghDataUtils
+ghDef		+	kept and cleaned
+ghErrorprone	+	kept as base of Xfp
+ghHdr
+ghIdf		++	kept but needs attention
+ghIfp		+	kept
+ghInputApp	-
+ghLineApp	-
+ghMath		+	kept
+ghOfp		+	kept
+ghRowApp	-
+ghRow
+ghStat		+	kept
+ghStrUtils	+	kept but moving some stuff to ghBioCore
+ghTax		->	should move to GhBio
+ghTfp		+	kept
+ghToken		++	kept with changes
+ghTok		-	see ghToken
+ghVariant	+	kept and cleaned
+
+ghConcurrentBase	new (used to be BaseSet) but maybe not needed
+			 anymore due to passing of QFuture into gh-concurrent?
+ghLexer			new Token class

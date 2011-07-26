@@ -1,0 +1,21 @@
+HEADERS +=\
+	ghDef.h \
+	ghErrorprone.h \
+	ghIdf.h \
+	ghIfp.h \
+	ghOfp.h \
+	ghTfp.h	\
+	ghVariant.h	\
+	ghParam.h	\
+	ghStrUtils.h	\
+	ghLexer.h	\
+	ghToken.h	\
+	ghRow.h	\
+	ghData.h	\
+	ghMath.h	\
+	ghStat.h	\
+	ghApp.h		\
+	ghDac.h		\
+	ghParamModel.h	\
+	ghCliApp.h	\
+	GhCore.h

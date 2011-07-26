@@ -1,0 +1,27 @@
+SOURCES +=\
+	ghParamView.cpp		\
+	ghActionView.cpp	\
+	ghEditView.cpp		\
+	ghFileView.cpp		\
+	ghColorView.cpp		\
+	ghFontView.cpp		\
+	ghBooleanView.cpp	\
+	ghChoiceView.cpp	\
+	ghMainWindow.cpp	\
+	ghHeatMap.cpp		\
+	ghListModel.cpp		\
+	ghFutureDialog.cpp 	\
+	ghImageWidget.cpp 	\
+	ghLogWidget.cpp 	\
+	ghScene.cpp 		\
+	ghTableData.cpp 	\
+	ghTableModel.cpp 	\
+	ghTableView.cpp 	\
+	ghHeaderView.cpp	\
+	ghTableWidget.cpp 	\
+	ghGridWidget.cpp 	\
+	ghView.cpp 		\
+	ghStringListDialog.cpp	\
+	ghVariantMapDialog.cpp	\
+	ghVariantListDialog.cpp	\
+	ghTableDialog.cpp

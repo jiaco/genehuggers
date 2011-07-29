@@ -8,7 +8,7 @@ class	GH_DLL_EXPORT	ParamModel	:	public	QObject
 {
 	Q_OBJECT
 public:
-	static const int BaseTypeAndValue = 0x0007;
+	static const int BaseTypeAndValue = 0x000f;
 
 	enum Type {
 		Undef = 0x0000,		// 0 0000
@@ -19,8 +19,14 @@ public:
 		Choice = 0x0005,	// 0 0101
 		Color = 0x0006,		// 0 0110
 		Font = 0x0007,		// 0 0111
-					// 0 1111
-	//	BaseTypeAndValue = 0x0007,
+		ToolButton = 0x0008,	// 0 1000	8
+					// 0 1001	9
+					// 0 1010	10 a	
+					// 0 1011	11 b
+					// 0 1100	12 c
+					// 0 1101	13 d
+					// 0 1110	14 e
+					// 0 1111	15 f
 		// Boolean subsets
 		// DEFAULT Check
 		Radio = 0x0010,		// 0001 0000

@@ -21,7 +21,14 @@ public:
 public slots:
 	void	textEdited( const QString& value );
 protected:
-	QString	_widgetName, _checkBoxName;
+	QCheckBox*	newCheckBox();
+	QLabel*		newLabel();
+	QLineEdit*	newLineEdit();
+
+	QString	_checkBoxName, _lineEditName;
+	// for now, never needed to acces the QLabel
+
+	static const ParamModel::Type	_modelType = ParamModel::Edit;
 };
 }	//	GH namespace
 #endif	//	GH_EDITVIEW_H

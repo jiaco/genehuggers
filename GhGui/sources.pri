@@ -2,6 +2,7 @@ SOURCES +=\
 	ghParamView.cpp		\
 	ghActionView.cpp	\
 	ghEditView.cpp		\
+	ghToolButtonView.cpp	\
 	ghFileView.cpp		\
 	ghColorView.cpp		\
 	ghFontView.cpp		\

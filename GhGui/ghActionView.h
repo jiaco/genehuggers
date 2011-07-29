@@ -31,8 +31,12 @@ public:
 	// pass Checkable and Checked straight to the QAction
 
 protected:
+	QPushButton	*newPushButton();
+
 	QAction	*_action;
-	QString	_btnName;
+	QString	_pushButtonName;
+
+	static	const ParamModel::Type _modelType = ParamModel::Action;
 };
 }	//	GH namespace
 #endif	//	GH_ACTIONVIEW_H

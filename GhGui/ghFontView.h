@@ -1,10 +1,10 @@
 #ifndef GH_FONTVIEW_H
 #define	GH_FONTVIEW_H	1
-#include "ghEditView.h"
+#include "ghToolButtonView.h"
 
 namespace	GH
 {
-class	GH_DLL_EXPORT FontView	:	public	EditView
+class	GH_DLL_EXPORT FontView	:	public	ToolButtonView
 {
 	Q_OBJECT
 
@@ -14,16 +14,13 @@ public:
 	void	addToGrid( QGridLayout *layout, const int& row, const int& col,
 		 const int& rowSpan = 1, const int& colSpan = 1,
 		 Qt::Alignment alignment = 0 );
-	void	updateEnabled();
 	void	updateChecked() {};
 	void	updateCheckable() {};
 
 public slots:
 	void	doBrowse();
 protected:
-	QString	_browseBtnName;
-	QAction	*_browseAction;
-	QMenu	*_menu;
+	static const ParamModel::Type _modelType = ParamModel::Font;
 };
 }	//	GH namespace
 #endif	//	GH_FONTVIEW_H

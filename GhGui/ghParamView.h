@@ -5,6 +5,18 @@
 
 namespace	GH
 {
+/*
+	Listing of template functions:
+
+	GetParam( parent, name, cname );
+	GetChildren( parent, name );
+	SetChecked( parent, name, value );
+	SetEnabled( parent, name, value );
+	LoseFocus( parent, name );
+	ConnectToSlot( parent, name, signal, target, slot );
+	ConnectToSignal( parent, name, target, signal, slot )
+
+ */
 template<class T>
 T*	GetParam( QObject *parent, const QString& name,
 	 const char* cname = 0 )
@@ -118,8 +130,8 @@ signals:
 protected:
 	ParamModel	*_model;
 	QWidget		*_parent;
-		// USE THE MODEL
-	//bool		_enabled;
+	static const char*	className();
+	static const	ParamModel::Type _modelType = ParamModel::Undef;
 };
 }	//	GH namespace
 #endif	//	GH_PARAMVIEW_H

@@ -56,6 +56,8 @@ protected:
 	QString	_comboName;
 	QString	_selBtnName;	// selector widget
 	QString	_selEditName;	// selector widget
+
+	static const ParamModel::Type _modelType = ParamModel::Choice;
 };
 }	//	GH namespace
 #endif	//	GH_CHOICEVIEW_H

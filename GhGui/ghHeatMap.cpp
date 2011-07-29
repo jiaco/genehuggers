@@ -2,21 +2,37 @@
 
 namespace	GH
 {
+	//	ColorMap class
+	//
 	ColorMap::ColorMap()
+	: QMap<QString,QColor>()
 {
-	
+	_font = QFont();
 }
-void	ColorMap::clear()
+QFont	ColorMap::font() const
+{
+	return( _font );
+}
+void	ColorMap::setFont( const QFont& font )
+{
+	_font = font;
+}
+	//	ColorStep class
+	//
+	ColorStep::ColorStep()
+{
+}
+void	ColorStep::clear()
 {
 	_step.clear();
 	_color.clear();
 }
-void	ColorMap::addStep( const double& val, const QColor color )
+void	ColorStep::addStep( const double& val, const QColor color )
 {
 	_step << val;
 	_color << color;
 }
-QColor	ColorMap::get( const double& val )
+QColor	ColorStep::get( const double& val )
 {
 	for( int i = 0; i < _step.size(); ++i ) {
 		if( val < _step.at( i ) ) {
@@ -25,12 +41,24 @@ QColor	ColorMap::get( const double& val )
 	}
 	return( _color.at( _color.size() - 1 ) );
 }
-	HeatMap::HeatMap( QWidget* parent, ColorMap* cmap )
+	//	HeatMap class
+	//
+	HeatMap::HeatMap( QWidget* parent, ColorMap* clrmap )
 	: QWidget( parent, Qt::Window )
 {
-	_cmap = cmap;
+	_clrmap = clrmap;
+	_clrstep = 0;
 	_step = 0;
+	_i0 = 1;
 
+	init();
+}
+	HeatMap::HeatMap( QWidget* parent, ColorStep* clrstep )
+	: QWidget( parent, Qt::Window )
+{
+	_clrmap = 0;
+	_clrstep = clrstep;
+	_step = 0;
 	_i0 = 1;
 
 	init();
@@ -38,21 +66,20 @@ QColor	ColorMap::get( const double& val )
 	HeatMap::HeatMap( QWidget* parent, const int& step )
 	: QWidget( parent, Qt::Window )
 {
-	_cmap = 0;
+	_clrmap = 0;
+	_clrstep = 0;
 	_step = step;
-
 	_i0 = 1;
 
 	init();
 }
-void	HeatMap::setVerticalHeader( const QStringList& hdr )
-{
-	_vhdr = hdr;
-	_i0 = 0;
-}
 void	HeatMap::init()
 {
-	_font = QFont( "Helvetica", 12 );
+	if( _clrmap  ) {
+		_font = _clrmap->font();
+	} else {
+		_font = QFont( "Helvetica", 12 );
+	}
 	// _space = 20;
 	_space = 0;
 	// _startX = 20, _startY = 20; // Will set rectangle items starting pos
@@ -110,6 +137,24 @@ void	HeatMap::init()
 	delete	_viewCols;
 	delete	_scene;
 }
+void	HeatMap::setVerticalHeader( const QStringList& hdr )
+{
+	_vhdr = hdr;
+	_i0 = 0;
+}
+void	HeatMap::Display( const QStringList& hdr,
+	 const QStringList& vhdr,  const QList<Row>& data,
+	 const QString& title, ColorMap* clrmap, QWidget* parent )
+{
+	HeatMap	*hm = new HeatMap( parent, clrmap );
+	hm->setVerticalHeader( vhdr );
+	hm->setData( hdr, data );
+	hm->setWindowTitle( title );
+	hm->show();
+	hm->update();
+	hm->setGeometry( 50, 50, 600, 600 );
+}
+/*
 void	HeatMap::Display( const QStringList& hdr, const QList<Row>& data,
 	 const QString& title, QWidget* parent, ColorMap* cmap )
 {
@@ -136,6 +181,7 @@ void	HeatMap::Display( const QStringList& hdr,
 	hm->setGeometry( 50, 50, 600, 600 );
 	//hm->updateViewSize();
 }
+*/
 void	HeatMap::setData( const QStringList& hdr, const QList<Row>& data )
 {
 	_hdr = hdr;
@@ -146,33 +192,39 @@ void	HeatMap::setData( const QStringList& hdr, const QList<Row>& data )
 	_gridWidth = (_hdr.size() - _i0 ) * _boxWidth;
 	_gridHeight = _data.size() * _boxWidth;
 
-	_scene->setSceneRect( 0, 0, _topX + _gridWidth + _space, _topY + _gridHeight + _space);
+	_scene->setSceneRect( 0, 0,
+	 _topX + _gridWidth + _space, _topY + _gridHeight + _space);
 
-	_viewGrid->setSceneRect( _topX + _space, _topY + _space, _gridWidth, _gridHeight );
-	// _viewGrid->setFixedWidth( _gridWidth );
-	// _viewGrid->setFixedHeight( _gridHeight );
+	_viewGrid->setSceneRect( _topX + _space, _topY + _space,
+	 _gridWidth, _gridHeight );
+// _viewGrid->setFixedWidth( _gridWidth );
+// _viewGrid->setFixedHeight( _gridHeight );
 
 	_viewRows->setSceneRect( 0, _topY, _topX + _space, _gridHeight );
 	_viewRows->setFixedWidth( _topX + _space );
-	// _viewRows->setFixedHeight( _gridHeight );
-	//_viewRows->setFixedWidth( _topX + _viewRows->verticalScrollBar()->width() );
-	//_viewRows->setFixedHeight( _viewGrid->height() - _viewGrid->horizontalScrollBar()->height() );
+// _viewRows->setFixedHeight( _gridHeight );
+//_viewRows->setFixedWidth( _topX + _viewRows->verticalScrollBar()->width() );
+//_viewRows->setFixedHeight( _viewGrid->height() - _viewGrid->horizontalScrollBar()->height() );
 
 	_viewCols->setSceneRect( _topX, 0, _gridWidth, _topY + _space );
 	_viewCols->setFixedHeight( _topY  + _space );
-	// _viewCols->setFixedWidth( _gridWidth );
-	//_viewCols->setFixedHeight( _topY + _viewCols->horizontalScrollBar()->height() );
-	//_viewCols->setFixedWidth( _viewGrid->width() - _viewGrid->verticalScrollBar()->width() );
-
+// _viewCols->setFixedWidth( _gridWidth );
+//_viewCols->setFixedHeight( _topY + _viewCols->horizontalScrollBar()->height() );
+//_viewCols->setFixedWidth( _viewGrid->width() - _viewGrid->verticalScrollBar()->width() );
 }
 void	HeatMap::updateViewSize()
 {
-	_viewRows->setFixedWidth( _topX + _viewRows->verticalScrollBar()->width() );
-	_viewRows->setFixedHeight( _viewGrid->height() - _viewGrid->horizontalScrollBar()->height() );
-	_viewCols->setFixedHeight( _topY + _viewCols->horizontalScrollBar()->height() );
-	_viewCols->setFixedHeight( _topY + _viewCols->horizontalScrollBar()->height() );
+	_viewRows->setFixedWidth( _topX +
+	 _viewRows->verticalScrollBar()->width() );
+	_viewRows->setFixedHeight( _viewGrid->height()
+	 - _viewGrid->horizontalScrollBar()->height() );
+	_viewCols->setFixedHeight( _topY +
+	 _viewCols->horizontalScrollBar()->height() );
+	_viewCols->setFixedHeight( _topY +
+	 _viewCols->horizontalScrollBar()->height() );
 
-	_viewCols->setFixedWidth( _viewGrid->width() - _viewGrid->verticalScrollBar()->width() );
+	_viewCols->setFixedWidth( _viewGrid->width() -
+	 _viewGrid->verticalScrollBar()->width() );
 }
 /*
  * 	PRIVATE METHODS
@@ -270,16 +322,52 @@ void	HeatMap::setVerticalHeader()
  */
 void	HeatMap::drawGrid()
 {
+	if( _clrmap != 0 ) {
+		drawGridWithColorMap();
+	} else if( _clrstep != 0 ) {
+		drawGridWithColorStep();
+	} else {
+		drawGridWithStep();
+	}
+}
+void	HeatMap::drawGridWithColorMap()
+{
+	int	gx, gy;	
+	QString	val;
+	QColor	color, blackColor;
+
+	blackColor = QColor( 0, 0, 0 );
+
+	gy = _topY + _space;
+	for( int i = 0; i < _data.size(); ++i ) {
+		gx = _topX + _space;
+		for( int j = _i0; j < _hdr.size(); ++j ) {
+			val = S( _data.at( i )[ _hdr.at( j ) ] );
+			if( _clrmap->contains( val ) ) {
+				color = (*_clrmap)[ val ];
+			} else {
+				color = blackColor;
+			}
+			_scene->addRect( gx, gy,
+			 _boxWidth, _boxWidth,
+			 QPen(), color );
+			gx += _boxWidth;
+		} 
+		gy += _boxWidth;
+	}
+}
+void	HeatMap::drawGridWithColorStep()
+{
+}
+void	HeatMap::drawGridWithStep()
+{
 	int	gx, gy;
 	double	val;
 	bool ok;
 	QColor	blackColor, color;
 
 	blackColor = QColor( 0, 0, 0 );
-	if( _cmap == 0 ) {
-		//updateGradientColor();
-		defaultColorMap();
-	}
+	defaultColorStep();
 	gy = _topY + _space;
 	for( int i = 0; i < _data.size(); ++i ) {
 		gx = _topX + _space;
@@ -289,10 +377,9 @@ void	HeatMap::drawGrid()
 				val = 0;
 				color = blackColor;
 			} else {
-				color = _cmap->get( val );
+				color = _clrstep->get( val );
 				//color = getColor( val );
 			}
-			//val = D( _data.at( i )[ _hdr.at( j ) ] );
 			_scene->addRect( gx, gy, _boxWidth, _boxWidth, QPen(), color );
 			gx += _boxWidth;
 		} 
@@ -376,7 +463,7 @@ QColor	HeatMap::getColor( const double& val )
 	
 	return QColor(r, g, b);
 }
-void	HeatMap::defaultColorMap()
+void	HeatMap::defaultColorStep()
 {
 	QList<double>	temp;
 	bool	ok;
@@ -400,17 +487,17 @@ void	HeatMap::defaultColorMap()
 		nPerStep = top;
 	}
 	
-	if( _cmap != 0 ) {
-		delete _cmap;
-		_cmap = new ColorMap();
+	if( _clrstep != 0 ) {
+		delete _clrstep;
+		_clrstep = new ColorStep();
 	}
-	_cmap->clear();
+	_clrstep->clear();
 	for( int i = 0; i < _step; ++i ) {
 		int	r = 255;
 		int 	b = 0;
 		int	g = 0;
 		b = g = 255 * ( ( i + 1 ) / _step );
-		_cmap->addStep( temp.at( i + nPerStep ), QColor( r, g, b ) );
+		_clrstep->addStep( temp.at( i + nPerStep ), QColor( r, g, b ) );
 	}
 }
 

@@ -53,8 +53,14 @@ protected:
 		 const int& row, const int& col,
 		 const int& rowSpan = 1, const int& colSpan = 1,
 		 Qt::Alignment alignment = 0 );
-	QString	_widgetName;
+
+	QCheckBox*	newCheckBox();
+	QRadioButton*	newRadioButton();
+
+	QString	_checkBoxName, _groupBoxName, _radioButtonName;
 	QAction	*_action;
+
+	static const ParamModel::Type _modelType = ParamModel::Boolean;
 };
 }	//	GH namespace
 #endif	//	GH_BOOLEANVIEW_H

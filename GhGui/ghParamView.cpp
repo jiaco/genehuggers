@@ -30,6 +30,35 @@ namespace	GH
 
 	//_enabled = _model->isEnabled();
 }
+const char*	ParamView::className()
+{
+	switch( _modelType ) {
+		case	ParamModel::Action:
+			return( "GH::ActionView" );
+			break;
+		case	ParamModel::Boolean:
+			return( "GH::BooleanView" );
+			break;
+		case	ParamModel::Choice:
+			return( "GH::ChoiceView" );
+			break;
+		case	ParamModel::File:
+			return( "GH::FileView" );
+			break;
+		case	ParamModel::Font:
+			return( "GH::FontView" );
+			break;
+		case	ParamModel::Color:
+			return( "GH::ColorView" );
+			break;
+		case	ParamModel::ToolButton:
+			return( "GH::ToolButtonView" );
+			break;
+		default:
+			return( "GH::ParamView" );
+			break;
+	}
+}
 ParamModel* ParamView::model() const
 {
 	return( _model );

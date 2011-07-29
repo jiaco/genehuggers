@@ -4,6 +4,7 @@
 #include "ghParamView.h"
 #include "ghActionView.h"
 #include "ghEditView.h"
+#include "ghToolButtonView.h"
 #include "ghFileView.h"
 #include "ghColorView.h"
 #include "ghFontView.h"

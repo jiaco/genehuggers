@@ -2,6 +2,7 @@ HEADERS +=\
 	ghParamView.h	\
 	ghActionView.h	\
 	ghEditView.h	\
+	ghToolButtonView.h	\
 	ghFileView.h	\
 	ghColorView.h	\
 	ghFontView.h	\

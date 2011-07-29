@@ -49,7 +49,7 @@ QStringList	CliApp::paramNames( const QString& subgroup ) const
 		QStringList	rv;
 		foreach( QString pname, _paramNames ) {
 			QStringList tok = pname.split( '/' );
-			if( tok.size() > 0 && tok.at( 0 ) == subgroup ) {
+			if( tok.size() > 1 && tok.at( 0 ) == subgroup ) {
 				rv << pname;
 			}
 		}

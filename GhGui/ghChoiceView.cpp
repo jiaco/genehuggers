@@ -5,9 +5,9 @@ namespace	GH
 	ChoiceView::ChoiceView( ParamModel *model, QWidget *parent )
 	: ParamView( model, parent )
 {
-	_comboName = nameObject( "choiceComboBox" );
-	_selBtnName = nameObject( "choiceSelectorButton" );
-	_selEditName = nameObject( "choiceSelectorEdit" );
+	_comboName = nameObject( "combobox" );
+	_selBtnName = nameObject( "selectorbutton" );
+	_selEditName = nameObject( "selectoredit" );
 
 	_previousSelection = V2S( _model->value() );
 }
@@ -32,7 +32,7 @@ bool	ChoiceView::SetChoices( QObject *parent, const QString& name,
 	ChoiceView	*p;
 
 	if( ( p =
-	 GetParam<ChoiceView>( parent, name, "GH::ChoiceView" ) ) == 0 ) {
+	 GetParam<ChoiceView>( parent, name, className() ) ) == 0 ) {
 		return( false );
 	}
 	p->setChoices( choices );
@@ -87,7 +87,7 @@ bool	ChoiceView::AddAsCombo( QObject *parent, const QString& name,
 	ChoiceView *p;
 
 	if( ( p =
-	 GetParam<ChoiceView>( parent, name, "GH::ChoiceView" ) ) == 0 ) {
+	 GetParam<ChoiceView>( parent, name, className() ) ) == 0 ) {
 		return( false );
 	}
 	p->addAsCombo( layout, row, col );
@@ -116,7 +116,7 @@ bool	ChoiceView::AddAsSelector( QObject *parent, const QString& name,
 	ChoiceView *p;
 
 	if( ( p =
-	 GetParam<ChoiceView>( parent, name, "GH::ChoiceView" ) ) == 0 ) {
+	 GetParam<ChoiceView>( parent, name, className() ) ) == 0 ) {
 		return( false );
 	}
 	p->addAsSelector( layout, row, col );
@@ -160,7 +160,7 @@ bool	ChoiceView::AddAsRadioGroup( QObject *parent, const QString& name,
 	ChoiceView *p;
 
 	if( ( p =
-	 GetParam<ChoiceView>( parent, name, "GH::ChoiceView" ) ) == 0 ) {
+	 GetParam<ChoiceView>( parent, name, className() ) ) == 0 ) {
 		return( false );
 	}
 	p->addAsRadioGroup( layout, row, col );
@@ -221,6 +221,7 @@ void	ChoiceView::updateCombo()
 }
 void	ChoiceView::updateSelEdit()
 {
+	// TODO check with EditView and see if focus matters here
 	QList<QLineEdit *>	mytab =
 		GetChildren<QLineEdit>( _parent, _selEditName );
 

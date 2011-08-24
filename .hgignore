@@ -9,3 +9,6 @@ release/*
 *.xcodeproj
 Info.plist
 qrc_*.cpp
+*_resource.rc
+object_script.*.Debug
+object_script.*.Release

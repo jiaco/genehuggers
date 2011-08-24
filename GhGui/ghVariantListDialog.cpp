@@ -13,21 +13,24 @@ namespace	GH
 
 	_layout = new QGridLayout;
 	setLayout( _layout );
+	_btnDone = new QPushButton( "Done", this );
+	connect( _btnDone, SIGNAL( clicked() ),
+	 this, SLOT( accept() ) );
 
 	int i = 0;
 	for( i = 0; i < _labels.size(); ++i ) {
 		QLabel *label = new QLabel( labelList.at( i ) );
-		QLineEdit *edit = new QLineEdit( S( list.at( i ) ), this );
+		QString	s = "undef";
+		if( list.size() > i ) {
+			s = S( list.at( i ) );
+		}
+		QLineEdit *edit = new QLineEdit( s, this );
 		edit->setObjectName( labelList.at( i ) );
 		label->setBuddy( edit );
 		_layout->addWidget( label, i, 0 );
 		_layout->addWidget( edit, i, 1 );
 	}
-	_btnDone = new QPushButton( "Done", this );
 	_layout->addWidget( _btnDone, i, 0 );
-
-	connect( _btnDone, SIGNAL( clicked() ),
-	 this, SLOT( accept() ) );
 }
 void		VariantListDialog::accept()
 {

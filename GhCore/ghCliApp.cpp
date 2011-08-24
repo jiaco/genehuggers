@@ -78,6 +78,10 @@ void	CliApp::resetDefaults()
 		_param[ name ]->resetDefault();
 	}
 }
+void	CliApp::passInfo( const QString& text ) const
+{
+	emitError( Info( text ) );
+}
 	//
 	//	OLD INTERFACE
 	//

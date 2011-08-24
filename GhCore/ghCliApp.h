@@ -36,6 +36,7 @@ public:
 	QString	arg( const QString& name ) const;
 	bool	checkArgs();
 
+	void	passInfo( const QString& text ) const;
 	void	showError() const;
 	void	setRequiredParamNames( const QStringList& names );
 public slots:

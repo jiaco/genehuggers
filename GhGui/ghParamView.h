@@ -132,6 +132,8 @@ protected:
 	QWidget		*_parent;
 	static const char*	className();
 	static const	ParamModel::Type _modelType = ParamModel::Undef;
+	void		setHelpTexts( QWidget *w );
+	void		setHelpTexts( QAction *a );
 };
 }	//	GH namespace
 #endif	//	GH_PARAMVIEW_H

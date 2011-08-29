@@ -14,9 +14,35 @@ namespace	GH
 	_defaultValue = value;
 	_value = value;
 	_type = type;
-
 	_displayName = displayName;
+
+	init();
+}
+	ParamModel::ParamModel( const QString& name, const QVariant& value,
+	 const ParamType& type, const QString& displayName,
+	 const QString& configText, QObject *parent )
+	: QObject( parent )
+{
+	_name = name;
+	_defaultValue = value;
+	_value = value;
+	_type = type;
+	_displayName = displayName;
+
+	init();
+	addConfig( configText );
+	if( hasConfig( "checkable" ) && B( config( "checkable" ) )  ) {
+		_checkable = true;
+	}
+}
+void	ParamModel::init()
+{
 	// TODO should make empty do one thing and USTR do the other
+	if( _displayName.isEmpty() ) {
+		_displayName = _name;
+	} else if( _displayName == USTR ) {
+		_displayName = "";
+	}
 /*
 	if( displayName.isEmpty() ) {
 		_displayName = _name;
@@ -33,6 +59,57 @@ namespace	GH
 	if( _type == Action ) {
 		_hasSetting = false;
 	}
+}
+void	ParamModel::addConfig( const QString& text )
+{
+	QMap<QString,QVariant>	jason = JASON( text );
+	foreach( QString key, jason.keys() ) {
+		if( _config.contains( key ) ) {
+			_config[ key ] = jason[ key ];
+		} else {
+			_config.insert( key, jason[ key ] );
+		}
+	}
+}
+bool	ParamModel::hasConfig( const QString& key ) const
+{
+	return( _config.contains( key ) );
+}
+QVariant	ParamModel::config( const QString& key ) const
+{
+	QVariant	rv;
+
+	if( hasConfig( key ) ) {
+		rv = _config[ key ];
+	}
+	return( rv );
+}
+QString	ParamModel::configString( const QString& key ) const
+{
+	return( S( config( key ) ) );
+}
+QString	ParamModel::toolTip() const
+{
+	QString	rv;
+
+	if( _config.contains( "tooltip" ) ) {
+		rv = S( _config[ "tooltip" ] );
+	} else {
+		rv = _displayName;
+	}
+	return( rv );
+}
+QString	ParamModel::whatsThis() const
+{
+	QString	rv;
+
+	if( _config.contains( "whatsthis" ) ) {
+		rv = S( _config[ "whatsthis" ] );
+	} else {
+		rv = toolTip();
+	}
+	rv = QString( "<font color=\"#ff0000\">%1" ).arg( rv );
+	return( rv );
 }
 void	ParamModel::resetDefault()
 {

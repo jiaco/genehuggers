@@ -8,7 +8,33 @@ namespace	GH
 	connect( this, SIGNAL( defaultAction() ),
 	 this, SLOT( doBrowse() ) );
 
+/*
+	if( _model->hasConfig( "checkable" ) ) {
+		if( B( _model->config( "checkable" ) ) ) {
+			setCheckable( true );
+		}
+	}
+*/
 	configure();
+}
+FileView::DialogType	FileView::StringToDialogType( const QString& text )
+{
+	QString	s = text.toLower();
+	if( s.contains( "open" ) ) {
+		if( s.contains( "multi" ) ) {
+			return( FileView::OpenMulti );
+		} else {
+			return( FileView::Open );
+		}
+	} else if( s.contains( "dir" ) ) {
+		if( s.contains( "save" ) ) {
+			return( FileView::SaveDir );
+		} else {
+			return( FileView::Dir );
+		}
+	} else {
+		return( FileView::Save );
+	}
 }
 bool	FileView::SetCheckable( QObject* parent, const QString& name,
 	 const bool& tf )
@@ -34,8 +60,16 @@ void	FileView::addToGrid( QGridLayout *layout,
 void	FileView::configure( const DialogType& type,
 	 const QString& caption, const QString& filter )
 {
-	_type = type;
-	if( caption.isEmpty() ) {
+	if( _model->hasConfig( "dialogtype" ) ) {
+		_type =
+		 FileView::StringToDialogType(
+			 _model->configString( "dialogtype" ) );
+	} else {
+		_type = type;
+	}
+	if( _model->hasConfig( "caption" ) ) {
+		_caption = _model->configString( "caption" );
+	} else if( caption.isEmpty() ) {
 		switch( _type ) {
 			case	Dir:
 				_caption = CAPTION_DEFAULT_DIR;
@@ -56,7 +90,11 @@ void	FileView::configure( const DialogType& type,
 	} else {
 		_caption = caption;
 	}
-	_filter = filter;
+	if( _model->hasConfig( "filter" ) ) {
+		_filter = _model->configString( "filter" );
+	} else {
+		_filter = filter;
+	}
 }
 bool	FileView::Configure( QObject *parent, const QString& name,
 	 const DialogType& type, const QString& caption, const QString& filter )

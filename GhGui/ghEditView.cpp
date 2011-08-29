@@ -23,6 +23,8 @@ QCheckBox*	EditView::newCheckBox()
 QLabel*	EditView::newLabel()
 {
 	QLabel	*label = new QLabel( _model->displayName(), _parent );
+
+	setHelpTexts( label );
 	return( label );
 }
 QLineEdit*	EditView::newLineEdit()
@@ -32,6 +34,8 @@ QLineEdit*	EditView::newLineEdit()
 	edit->setObjectName( _lineEditName );
 	connect( edit, SIGNAL( textEdited(QString) ),
 	 this, SLOT( textEdited(QString) ) );
+
+	setHelpTexts( edit );
 
 	return( edit );
 }

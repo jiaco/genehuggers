@@ -75,6 +75,16 @@ QString	ParamView::nameObject( const QString& subName )
 {
 	return( QString( "%1_%2" ).arg( _model->name() ).arg( subName ) );
 }
+void	ParamView::setHelpTexts( QWidget *w )
+{
+	w->setToolTip( _model->toolTip() );
+	w->setWhatsThis( _model->whatsThis() );
+}
+void	ParamView::setHelpTexts( QAction *a )
+{
+	a->setToolTip( _model->toolTip() );
+	a->setWhatsThis( _model->whatsThis() );
+}
 void	ParamView::setValue( const QVariant& value )
 {
 	emit( changed( value ) );

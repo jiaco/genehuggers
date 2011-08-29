@@ -29,7 +29,8 @@ public:
 
 	void	addParam( const QString& name, const QVariant& value,
 		 const ParamModel::ParamType& type = ParamModel::Undef,
-		 const QString& displayName = QString() );
+		 const QString& displayName = QString(),
+		 const QString& configText = QString() );
 
 	bool	isGui() const;
 	QString arg0() const;

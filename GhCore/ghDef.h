@@ -170,5 +170,42 @@ inline	int	NumericChr( const QString& s )
 	return( -1 );
 }
 
+inline  QMap<QString,QVariant>  JASON( const QString& text )
+{
+	QStringList     pairs, nv;
+	QString         name, value;
+	QMap<QString,QVariant>  rv;
+	
+	pairs = text.split( ';', QString::SkipEmptyParts );
+	foreach( QString pair, pairs ) {
+		if( !pair.contains( '=' ) ) {
+			continue;
+		}
+		int x = pair.indexOf( '=' );
+		name = pair.mid( 0, x );
+		value = pair.mid( x + 1 );
+
+/*
+		nv = pair.split( '=' );
+		if( nv.size() != 2 ) {
+			continue;
+		}
+		name = nv.at( 0 );
+		value = nv.at( 1 );
+*/
+		if( name.startsWith( "'" ) && name.endsWith( "'" ) ) {
+			name = name.mid( 1, name.size() - 2 );
+		}
+		if( value.startsWith( "'" ) && value.endsWith( "'" ) ) {
+			value = value.mid( 1, value.size() - 2 );
+		}
+		if( rv.contains( name ) ) {
+			rv[ name ] = QVariant( value );
+		} else {
+			rv.insert( name, QVariant( value ) );
+		}
+	}
+	return( rv );
+}
 }	//	GH namespace
 #endif	//	GH_DEF_H

@@ -7,6 +7,7 @@ namespace	GH
 {
 	_pushButtonName = nameObject( "pushbutton" );
 	_action = new QAction( _model->displayName(), _parent );
+	setHelpTexts( _action );
 }
 QPushButton*	ActionView::newPushButton()
 {
@@ -15,6 +16,7 @@ QPushButton*	ActionView::newPushButton()
 
 	pushButton->setObjectName( _pushButtonName );
 	connect( pushButton, SIGNAL( pressed() ), _action, SLOT( trigger() ) );
+	setHelpTexts( pushButton );
 	return( pushButton );
 }
 void	ActionView::addToGrid( QGridLayout *layout,

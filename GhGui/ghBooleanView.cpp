@@ -11,6 +11,7 @@ namespace	GH
 
 	_action = new QAction( _model->displayName(), _parent );
 	_action->setCheckable( true );
+	setHelpTexts( _action );
 
 	// here the action toggles the other widgets
 	// but the other widgets are not toggling the action...
@@ -65,6 +66,7 @@ void	BooleanView::addAsGroupBox( QGridLayout* layout,
 	connect( groupBox, SIGNAL( toggled(bool) ),
 	 this, SLOT( toggle(bool) ) );
 
+	setHelpTexts( groupBox );
 	layout->addWidget( groupBox, row, col, rowSpan, colSpan, alignment );
 
 	updateEnabled();
@@ -103,6 +105,7 @@ void	BooleanView::addAsGroupBox( QGridLayout* layout,
 
 	layout->addWidget( groupBox, row, col );
 
+	setHelpTexts( groupBox );
 	updateEnabled();
 }
 bool	BooleanView::AddAsGroupBox( QObject *parent, const QString& name,
@@ -127,6 +130,8 @@ QCheckBox*	BooleanView::newCheckBox()
 	checkBox->setChecked( B( _model->value() ) );
 	connect( checkBox, SIGNAL( toggled(bool) ),
 	 this, SLOT( toggle(bool) ) );
+
+	setHelpTexts( checkBox );
 	
 	return( checkBox );
 }
@@ -162,6 +167,8 @@ QRadioButton*	BooleanView::newRadioButton()
 	radioButton->setChecked( B( _model->value() ) );
 	connect( radioButton, SIGNAL( toggled(bool) ),
 	 this, SLOT( toggle(bool) ) );
+
+	setHelpTexts( radioButton );
 
 	return( radioButton );
 }

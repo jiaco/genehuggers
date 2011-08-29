@@ -70,6 +70,9 @@ void	ChoiceView::addAsCombo( QGridLayout *layout,
 	connect( comboBox, SIGNAL( activated(QString) ),
 	 this, SIGNAL( activated(QString) ) );
 
+	setHelpTexts( label );
+	setHelpTexts( comboBox );
+
 	int	useCol = col;
 	++useCol;
 	layout->addWidget( label, row, useCol );
@@ -105,6 +108,10 @@ void	ChoiceView::addAsSelector( QGridLayout *layout,
 	
 	connect( button, SIGNAL( clicked() ),
 	 this, SLOT( showSelector() ) );
+
+	setHelpTexts( label );
+	setHelpTexts( edit );
+	setHelpTexts( button );
 
 	layout->addWidget( label, row, col );
 	layout->addWidget( edit, row, col + 1 );
@@ -151,6 +158,8 @@ void	ChoiceView::addAsRadioGroup( QGridLayout *layout,
 	
 	connect( btnGroup, SIGNAL( buttonClicked(int) ),
 		this, SLOT( currentButtonChanged(int) ) );
+
+	setHelpTexts( btnGroupBox );
 
 	layout->addWidget( btnGroupBox, row, col, 1, -1 );
 }

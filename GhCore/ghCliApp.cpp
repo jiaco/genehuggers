@@ -37,9 +37,11 @@ void	CliApp::addParam( const QString& name, ParamModel* param )
 	_paramNames << name;
 }
 void	CliApp::addParam( const QString& name, const QVariant& value,
-	 const ParamModel::ParamType& type, const QString& displayName )
+	 const ParamModel::ParamType& type, const QString& displayName,
+	 const QString& configText )
 {
-	addParam( name, new ParamModel( name, value, type, displayName ) );
+	addParam( name,
+	 new ParamModel( name, value, type, displayName, configText ) );
 }
 QStringList	CliApp::paramNames( const QString& subgroup ) const
 {

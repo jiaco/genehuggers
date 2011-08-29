@@ -25,6 +25,8 @@ QToolButton*	ToolButtonView::newToolButton()
 	toolButton->setText( _model->displayName() );
 	toolButton->setDefaultAction( _defaultAction );
 
+	setHelpTexts( toolButton );
+
 	return( toolButton );
 }
 void	ToolButtonView::addToGrid( QGridLayout *layout,

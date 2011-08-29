@@ -1,6 +1,8 @@
 #ifndef	GH_PARAMMODEL_H
 #define	GH_PARAMMODEL_H	1
 #include "ghDef.h"
+#include "ghVariant.h"
+//	JASON() is in ghDef.h
 
 namespace	GH
 {
@@ -44,10 +46,18 @@ public:
 		const ParamType& type = Undef,
 		const QString& displayName = QString(),
 		QObject *parent = 0 );
+	ParamModel( const QString& name, const QVariant& value,
+		const ParamType& type = Undef,
+		const QString& displayName = QString(),
+		const QString& configText = QString(),
+		QObject *parent = 0 );
+
+	void	init();
 /*
 	void	setValue( const QVariant& value );
 	void	guiSetValue( const QVariant& value );
 */
+	void	addConfig( const QString& text );
 
 	QString		name() const;
 	QString		displayName() const;
@@ -60,6 +70,12 @@ public:
 	bool	isChecked() const;
 
 	bool	hasSetting() const;
+
+	bool	hasConfig( const QString& key ) const;
+	QString	configString( const QString& key ) const;
+	QVariant	config( const QString& key ) const;
+	QString	toolTip() const;
+	QString	whatsThis() const;
 
 public slots:
 	void	setValue( const QVariant& value );
@@ -94,6 +110,8 @@ private:
 	QString		_name;
 	QString		_displayName;
 	ParamType	_type;
+
+	QMap<QString,QVariant>	_config;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS( ParamModel::ParamType );
 }	//	GH namespace

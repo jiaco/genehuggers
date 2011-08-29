@@ -19,6 +19,8 @@ public:
 		Dir, Open, OpenMulti, Save, SaveDir
 		};
 
+	static	DialogType	StringToDialogType( const QString& text );
+
 	FileView( ParamModel *model, QWidget *parent );
 
 	void	addToGrid( QGridLayout *layout, const int& row, const int& col,

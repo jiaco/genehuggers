@@ -17,5 +17,7 @@ namespace	GH
 	pui( _centralLayout, 0 );
 	ActionView::AddListener( this, "Doit", _myApp, SLOT( doit() ) );
 	setCentralWidget( _centralWidget );
+
+	appendHelpMenu( "?" );
 }
 }	//	GH namespace

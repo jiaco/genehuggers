@@ -38,6 +38,11 @@ void	MessageBox( const QString& text, const int& type )
 	_app = app;
 	_logWidget = 0;
 
+	_helpText = _aboutText = QString();
+	_helpWidget = _aboutWidget = 0;
+	_helpAction = _aboutAction = 0;
+	_whatsThisAction = _resetDefaultsAction = 0;
+
 	// added June 14, 2011 due to issues with different versions
 	// possibly creating a fiasco on windows where one release
 	// would crash due to ?things in the registry?
@@ -51,18 +56,43 @@ void	MessageBox( const QString& text, const int& type )
 	connect( _app, SIGNAL( emitError(Error*) ),
 	 this, SLOT( showMessage(Error*) ) );
 
-	_resetDefaults = new QAction( tr( "Reset Defaults" ), this );
-	connect( _resetDefaults, SIGNAL( triggered() ),
+	_helpAction = new QAction( tr( "Help" ), this );
+	connect( _helpAction, SIGNAL( triggered() ),
+	 this, SLOT( help() ) );
+
+	_aboutAction = new QAction( tr( "About" ), this );
+	connect( _aboutAction, SIGNAL( triggered() ),
+	 this, SLOT( about() ) );
+
+	_whatsThisAction = QWhatsThis::createAction( this );
+	_whatsThisAction->setCheckable( true );
+	connect( _whatsThisAction, SIGNAL( triggered() ),
+	 this, SLOT( whatsThis() ) );
+	
+	_resetDefaultsAction = new QAction( tr( "Reset Defaults" ), this );
+	connect( _resetDefaultsAction, SIGNAL( triggered() ),
 	 this, SIGNAL( resetDefaults() ) );
 	connect( this, SIGNAL( resetDefaults() ),
 	 _app, SLOT( resetDefaults() ) );
-
+// evidently tooltips on actions in menus do not show up..
+	_resetDefaultsAction->setToolTip(
+	 "Reset all parameters to default values"
+	 );
+	_resetDefaultsAction->setWhatsThis(
+	 "<font color=#000000>"
+	 "If you find that you have completely messed up"
+	 " parameter values (which are now saved in your application settings)"
+	 " this action will reset them all to their initial, default values"
+	 "</font>" 
+	);
 	useLastGeometry();
 
 	createParamView();
+
 	ChoiceView::SetChoices( this, StyleParam, StyleChoices );
 	ConnectToSlot<ChoiceView>( this, StyleParam,
 	 SIGNAL( activated(QString) ), this, SLOT( loadStyle(QString) ) );
+
 
 	loadStyle( S( param( StyleParam )->value() ) );
 
@@ -74,9 +104,137 @@ void	MessageBox( const QString& text, const int& type )
 {
 	delete	_settings;
 }
+void	MainWindow::setHelpText( const QString& text )
+{
+	_helpText = text;
+}
+void	MainWindow::setAboutText( const QString& text )
+{
+	_aboutText = text;
+}
+QAction*	MainWindow::helpAction()
+{
+	return( _helpAction );
+}
+QAction*	MainWindow::aboutAction()
+{
+	return( _aboutAction );
+}
+QAction*	MainWindow::whatsThisAction()
+{
+	return( _whatsThisAction );
+}
 QAction*	MainWindow::resetDefaultsAction()
 {
-	return( _resetDefaults );
+	return( _resetDefaultsAction );
+}
+QMenu*	MainWindow::appendHelpMenu( const QString& text )
+{
+	QMenu *rv = menuBar()->addMenu( text );
+	rv->addAction( helpAction() );
+	rv->addAction( whatsThisAction() );
+	rv->addSeparator();
+	rv->addAction( resetDefaultsAction() );
+	rv->addAction( aboutAction() );
+	
+	return( rv );
+}
+void	MainWindow::help()
+{
+	if( _helpWidget == 0 ) {
+		if( _helpText.isEmpty() ) {
+			return;
+		}
+		if( _helpText.startsWith( ':' ) ) {
+			_helpText = Ifp::load( _helpText );
+		}
+		if( _helpText.isEmpty() ) {
+			_helpText = "Sorry but no help is available";
+		}
+		QGridLayout	*lay = new QGridLayout;
+		QScrollArea	*sa = new QScrollArea;
+		QLabel		*lbl = new QLabel;
+		_helpWidget = NonModalWindow( this );
+		QPushButton	*closeButton =
+		 new QPushButton( "Close", _helpWidget );
+
+		_helpWidget->setLayout( lay );
+		_helpWidget->setObjectName( "HelpWidget" );
+
+		lbl->setText( _helpText );
+		lbl->setWordWrap( true );
+		sa->setWidget( lbl );
+		lay->addWidget( sa, 0, 0, 1, 4 );
+		lay->addWidget( closeButton, 1, 3, 1, 1 );
+
+		connect( closeButton, SIGNAL( pressed() ),
+		 this, SLOT( help() ) );
+	}
+	if( _helpWidget->isVisible() ) {
+		_helpWidget->hide();
+	} else {
+		_helpWidget->show();
+	}
+}
+void	MainWindow::about()
+{
+	if( _aboutWidget == 0 ) {
+		if( _aboutText.isEmpty() ) {
+			return;
+		}
+		if( _aboutText.startsWith( ':' ) ) {
+			_aboutText = Ifp::load( _aboutText );
+		}
+		if( _aboutText.isEmpty() ) {
+			_aboutText = "Created with GeneHuggers.\n"
+			 " No other information is available...";
+		}
+		QGridLayout	*lay = new QGridLayout;
+		QLabel		*lbl = new QLabel;
+		_aboutWidget = NonModalWindow( this );
+		QPushButton	*closeButton =
+		 new QPushButton( "Close", _aboutWidget );
+		_aboutWidget->setLayout( lay );
+		_aboutWidget->setObjectName( "AboutWidget" );
+		lbl->setText( _aboutText );
+		lbl->setWordWrap( true );
+		lay->addWidget( lbl, 0, 0, 1, 4 );
+		lay->addWidget( closeButton, 1, 3, 1, 1 );
+
+		connect( closeButton, SIGNAL( pressed() ),
+		 this, SLOT( about() ) );
+	}
+	if( _aboutWidget->isVisible() ) {
+		_aboutWidget->hide();
+	} else {
+		_aboutWidget->show();
+	}
+	return;
+}
+void	MainWindow::whatsThis()
+{
+	// apparently whatsThis is a quick toggle that goes
+	// off as soon as it is used. the whole checkable
+	// concept is a waste.
+	//
+	// bugger about the QPalette on GNOME (ubuntu)
+	// the tooltip is white on back but the whatsthis
+	// is white on yellow which is invisible...
+	//	 current workaround is in ParamModel
+	// 	where the returned string is wrapped in font=red
+	_whatsThisAction->setChecked( true );
+	QWhatsThis::enterWhatsThisMode();
+/*
+	if( QWhatsThis::inWhatsThisMode() ) {
+qDebug() << "DEBUG LEAVE WHATS THIS MODE";
+		_whatsThisAction->setChecked( false );
+		QWhatsThis::leaveWhatsThisMode();
+	} else {
+qDebug() << "DEBUG ENTER WHATS THIS MODE";
+		_whatsThisAction->setChecked( true );
+		QWhatsThis::enterWhatsThisMode();
+	}
+*/
 }
 void	MainWindow::initLogWidget( Qt::WindowFlags f )
 {

@@ -327,7 +327,12 @@ void	MainWindow::createParamView()
 {
 	foreach( QString pname, _app->paramNames() ) {
 		if( _paramView.contains( pname ) ) {
-			// qWarn?
+/* whoops
+			qFatal(
+			 QString( "Bad param name used %1" )
+			 .arg( pname ).toLocal8Bit().data() 
+			);
+*/
 			continue;
 		}
 		if( _settings->contains( pname ) ) {
@@ -363,6 +368,10 @@ void	MainWindow::createParamView()
 				 new ChoiceView( _app->param( pname ), this ) );
 				break;
 			default:
+// TODO : once found that using an stupid/invalid ParamModel constructor
+// triggered this here and then qWarn()-ed about the connect below
+// so this would be a good place to count and then qFatal() at the end
+// to make sure that all is correct
 				break;
 		}
 		// ALL SIGNALS are connected in the ParamView constructor

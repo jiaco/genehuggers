@@ -40,8 +40,14 @@ public:
 
 	};
 	Q_DECLARE_FLAGS( ParamType, Type );
+	static ParamType	StringToParamType( const QString& text );
 	
 	ParamModel( QObject *parent = 0 );
+	ParamModel( const QString& name,
+	 const QString& configText, QObject *parent = 0 );
+	ParamModel( const QString& name, const ParamType& type,
+	 const QString& configText, QObject *parent = 0 );
+
 	ParamModel( const QString& name, const QVariant& value,
 		const ParamType& type = Undef,
 		const QString& displayName = QString(),
@@ -53,6 +59,7 @@ public:
 		QObject *parent = 0 );
 
 	void	init();
+	void	configure();
 /*
 	void	setValue( const QVariant& value );
 	void	guiSetValue( const QVariant& value );
@@ -71,9 +78,10 @@ public:
 
 	bool	hasSetting() const;
 
-	bool	hasConfig( const QString& key ) const;
-	QString	configString( const QString& key ) const;
+	bool		hasConfig( const QString& key ) const;
 	QVariant	config( const QString& key ) const;
+	QString		configString( const QString& key ) const;
+
 	QString	toolTip() const;
 	QString	whatsThis() const;
 

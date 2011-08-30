@@ -2,60 +2,153 @@
 
 namespace	GH
 {
+ParamModel::ParamType	ParamModel::StringToParamType( const QString& text )
+{
+	QString s = text.toLower();
+	QString	s2;
+	ParamType rv = ParamModel::Undef;
+
+	if( s.contains( '|' ) ) {
+		int x = s.indexOf( '|' );
+		s = s.mid( 0, x );
+		s2 = s.mid( x + 1 );
+	}
+	if( s == "edit" ) {
+		rv = ParamModel::Edit;
+	} else if( s == "file" ) {
+		rv = ParamModel::File;
+	} else if( s == "action" ) {
+		rv = ParamModel::Action;
+	} else if( s == "boolean" || s == "bool" ) {
+		rv = ParamModel::Boolean;
+	} else if( s == "choice" ) {
+		rv = ParamModel::Choice;
+	} else if( s == "color" ) {
+		rv = ParamModel::Color;
+	} else if( s == "font" ) {
+		rv = ParamModel::Font;
+	} else if( s == "toolbutton" ) {
+		rv = ParamModel::ToolButton;
+	}
+	if( rv == ParamModel::Boolean && s2 == "radio" ) {
+		rv |= ParamModel::Radio;
+	} else if( rv == ParamModel::Choice ) {
+		if( s2 == "selector" ) {
+			rv |= ParamModel::Selector;
+		} else if( s2 == "checkgroup" ) {
+			rv |= ParamModel::CheckGroup;
+		} else if( s2 == "radiogroup" ) {
+			rv |= ParamModel::RadioGroup;
+		}
+	}
+	return( rv );
+}
 	ParamModel::ParamModel( QObject *parent )
 	: QObject( parent )
 {
+	init();
+	configure();
+}
+	ParamModel::ParamModel( const QString& name,
+	 const QString& configText, QObject* parent )
+	: QObject( parent )
+{
+	init();
+	_name = name;
+	addConfig( configText );
+	configure();
+}
+	ParamModel::ParamModel( const QString& name,
+	 const ParamModel::ParamType& type,
+	 const QString& configText, QObject* parent )
+	: QObject( parent )
+{
+	init();
+	_name = name;
+	addConfig( configText );
+	_type = type;
+	configure();
 }
 	ParamModel::ParamModel( const QString& name, const QVariant& value,
 	 const ParamType& type, const QString& displayName, QObject *parent )
 	: QObject( parent )
 {
+	init();
 	_name = name;
 	_defaultValue = value;
 	_value = value;
 	_type = type;
 	_displayName = displayName;
-
-	init();
+	configure();
 }
 	ParamModel::ParamModel( const QString& name, const QVariant& value,
 	 const ParamType& type, const QString& displayName,
 	 const QString& configText, QObject *parent )
 	: QObject( parent )
 {
+	init();
 	_name = name;
 	_defaultValue = value;
 	_value = value;
 	_type = type;
 	_displayName = displayName;
 
-	init();
 	addConfig( configText );
-	if( hasConfig( "checkable" ) && B( config( "checkable" ) )  ) {
-		_checkable = true;
-	}
+	configure();
 }
 void	ParamModel::init()
 {
-	// TODO should make empty do one thing and USTR do the other
-	if( _displayName.isEmpty() ) {
-		_displayName = _name;
-	} else if( _displayName == USTR ) {
-		_displayName = "";
-	}
-/*
-	if( displayName.isEmpty() ) {
-		_displayName = _name;
-	} else {
-		_displayName = displayName;
-	}
-*/
-	setObjectName( _name );
-	_enabled = true;
-	_checkable = false;
-	_checked = false;
+	_name = _displayName = "";
+	_type = ParamModel::Undef;
+	_value = _defaultValue = QVariant();
+	
 	_hasSetting = true;
-	// can expand here for checkable/checked based on type
+	_enabled = true;
+	_checkable = _checked = false;
+
+	_config.clear();
+}
+void	ParamModel::configure()
+{	
+	// name is the only thing not possibly in the config
+	if( hasConfig( "type" ) ) {
+		_type = StringToParamType( configString( "type" ) );
+	}
+	if( hasConfig( "value" ) ) {
+		_value = config( "value" );
+	}
+	if( hasConfig( "defaultValue" ) ) {
+		_defaultValue = config( "defaultValue" );
+	}
+	if( hasConfig( "displayName" ) ) {
+		_displayName = configString( "displayName" );
+	}
+	if( hasConfig( "hasSetting" ) &&
+	 B( config( "hasSetting" ) ) == false ) {
+		_hasSetting = false;
+	}
+	if( hasConfig( "enabled" ) &&
+	 B( config( "enabled" ) ) == false ) {
+		_enabled = false;
+	}
+	if( hasConfig( "checkable" ) &&
+	 B( config( "checkable" ) ) == true ) {
+		_checkable = true;
+	}
+	if( hasConfig( "checked" ) &&
+	 B( config( "checked" ) ) == true ) {
+		_checked = true;
+	}
+	//
+	// TODO what is more logical? USTR = name and "" = empty right?
+	//
+	if( _displayName.isEmpty() ) {
+		_displayName = "";
+	} else if( _displayName == USTR ) {
+		_displayName = _name;
+	}
+	setObjectName( _name );
+
 	if( _type == Action ) {
 		_hasSetting = false;
 	}
@@ -92,8 +185,8 @@ QString	ParamModel::toolTip() const
 {
 	QString	rv;
 
-	if( _config.contains( "tooltip" ) ) {
-		rv = S( _config[ "tooltip" ] );
+	if( _config.contains( "toolTip" ) ) {
+		rv = S( _config[ "toolTip" ] );
 	} else {
 		rv = _displayName;
 	}
@@ -103,12 +196,13 @@ QString	ParamModel::whatsThis() const
 {
 	QString	rv;
 
-	if( _config.contains( "whatsthis" ) ) {
-		rv = S( _config[ "whatsthis" ] );
+	if( _config.contains( "whatsThis" ) ) {
+		rv = S( _config[ "whatsThis" ] );
 	} else {
 		rv = toolTip();
 	}
-	rv = QString( "<font color=\"#ff0000\">%1" ).arg( rv );
+	// TODO attempt to fix this via StyleSheets or something
+	rv = QString( "<font color=\"#0f0f0f\">%1" ).arg( rv );
 	return( rv );
 }
 void	ParamModel::resetDefault()

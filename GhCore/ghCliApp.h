@@ -5,12 +5,23 @@
 #include "ghErrorprone.h"
 #include "ghParamModel.h"
 
-
 namespace	GH
 {
 QMap<QString,QString>	MapStringArgs( const int& argc, char** argv );
 
 const	QString	StyleParam = "_Style";
+
+#define	ghApp	CliApp::instance()
+
+QVariant	APP_V( const QString& name );
+bool		APP_B( const QString& name );
+int		APP_I( const QString& name );
+double		APP_D( const QString& name );
+QString		APP_S( const QString& name );
+QStringList	APP_SL( const QString& name );
+QColor		APP_CLR( const QString& name );
+QFont		APP_FONT( const QString& name );
+QString		APP_FONTSTRING( const QString& name );
 
 class	GH_DLL_EXPORT	CliApp	:	public	QObject, public Errorprone
 {
@@ -18,14 +29,26 @@ class	GH_DLL_EXPORT	CliApp	:	public	QObject, public Errorprone
 
 public:
 	CliApp( int argc, char** argv );
+	~CliApp();
+
+	static CliApp *instance() { return self; }
 
 	QStringList	paramNames( const QString& subgroup = QString() ) const;
 	ParamModel*	param( const QString& name ) const;
 	ParamModel*	param( const QString& name );
+
 	void	addParam( const QString& name, ParamModel* param );
 	void	setParamValue( const QString& name, const QVariant& value );
+	bool	hasParam( const QString& name ) const;
 
 	ParamModel::ParamType	paramType( const QString& name );
+
+	void	addParam( const QString& name,
+		 const ParamModel::ParamType& type,
+		 const QString& configText );
+
+	void	addParam( const QString& name,
+		 const QString& configText );
 
 	void	addParam( const QString& name, const QVariant& value,
 		 const ParamModel::ParamType& type = ParamModel::Undef,
@@ -54,6 +77,10 @@ protected:
 	bool				_isGui;
 	QString				_arg0;
 	QMap<QString,QString>		_arg;
+private:
+	static	CliApp	*self;
+
+	Q_DISABLE_COPY(CliApp)
 };
 
 }	//	GH namespace

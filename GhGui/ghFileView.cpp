@@ -60,10 +60,10 @@ void	FileView::addToGrid( QGridLayout *layout,
 void	FileView::configure( const DialogType& type,
 	 const QString& caption, const QString& filter )
 {
-	if( _model->hasConfig( "dialogtype" ) ) {
+	if( _model->hasConfig( "dialogType" ) ) {
 		_type =
 		 FileView::StringToDialogType(
-			 _model->configString( "dialogtype" ) );
+			 _model->configString( "dialogType" ) );
 	} else {
 		_type = type;
 	}

@@ -55,7 +55,17 @@ void	FileView::addToGrid( QGridLayout *layout,
 	ToolButtonView::addToGrid( layout, row, col,
 	 rowSpan, colSpan, alignment );
 
-	_startingDir = SL( _model->value() ).at( 0 );
+	// August 31, 2011 Found that I was blindly
+	// accessing at( 0 ) here but if there are no
+	// settings, this seg.faults
+
+	// TODO read all code and make sure this never happens
+	// anywhere else.
+	//
+	QStringList	sl = SL( _model->value() );
+	if( sl.size() > 0 ) {
+		_startingDir = SL( _model->value() ).at( 0 );
+	}
 }
 void	FileView::configure( const DialogType& type,
 	 const QString& caption, const QString& filter )

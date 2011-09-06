@@ -39,7 +39,8 @@ void	View::mousePressEvent( QMouseEvent *event )
 			}
 		}
 		if( !handled ) {
-			QGraphicsView::mousePressEvent( event );
+			event->ignore();
+			//QGraphicsView::mousePressEvent( event );
 		}
 	} else if( event->button() == Qt::RightButton ) {
 		_lastDragPos = event->pos();

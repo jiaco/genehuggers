@@ -119,6 +119,7 @@ void	ParamModel::configure()
 	}
 	if( hasConfig( "defaultValue" ) ) {
 		_defaultValue = config( "defaultValue" );
+		_value = _defaultValue;
 	}
 	if( hasConfig( "displayName" ) ) {
 		_displayName = configString( "displayName" );

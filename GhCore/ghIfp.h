@@ -34,6 +34,8 @@ const	int	EOL_SIZE = 1;		//!< used in \a next()
 class	GH_DLL_EXPORT	Ifp	: public QTextStream, public GH::Errorprone
 {
 public:
+	Ifp();
+	~Ifp();
 	bool	open( const QString& usePath = GH::USTR );
 	void	close();
 	QString	next();

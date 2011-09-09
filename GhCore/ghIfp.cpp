@@ -28,6 +28,13 @@ QString	Ifp::load( const QString& path )
 		stdin can also be selected by calling
 		\a Ifp.open( \a GH::USTR ) and \a Ifp.open( \a GH::STDIN ).
  */
+	Ifp::Ifp()
+{
+}
+	Ifp::~Ifp()
+{
+	close();
+}
 bool	Ifp::open( const QString& usePath )
 {
 	QChar	ch;
@@ -48,6 +55,8 @@ bool	Ifp::open( const QString& usePath )
 		setDevice( &file );
 		path = STDIN;
 	} else if( usePath.endsWith( ".gz" ) ) {
+	// TODO: figure out if this is worth waiting for
+	//	see QProcess docs there is a msec param
 		path = usePath;
 		processArgs << "-c";
 		processArgs << path;

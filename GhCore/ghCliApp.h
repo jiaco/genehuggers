@@ -13,15 +13,15 @@ const	QString	StyleParam = "_Style";
 
 #define	ghApp	CliApp::instance()
 
-QVariant	APP_V( const QString& name );
-bool		APP_B( const QString& name );
-int		APP_I( const QString& name );
-double		APP_D( const QString& name );
-QString		APP_S( const QString& name );
-QStringList	APP_SL( const QString& name );
-QColor		APP_CLR( const QString& name );
-QFont		APP_FONT( const QString& name );
-QString		APP_FONTSTRING( const QString& name );
+GH_DLL_EXPORT	QVariant	APP_V( const QString& name );
+GH_DLL_EXPORT	bool		APP_B( const QString& name );
+GH_DLL_EXPORT	int		APP_I( const QString& name );
+GH_DLL_EXPORT	double		APP_D( const QString& name );
+GH_DLL_EXPORT	QString		APP_S( const QString& name );
+GH_DLL_EXPORT	QStringList	APP_SL( const QString& name );
+GH_DLL_EXPORT	QColor		APP_CLR( const QString& name );
+GH_DLL_EXPORT	QFont		APP_FONT( const QString& name );
+GH_DLL_EXPORT	QString		APP_FONTSTRING( const QString& name );
 
 class	GH_DLL_EXPORT	CliApp	:	public	QObject, public Errorprone
 {

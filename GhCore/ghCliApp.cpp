@@ -139,6 +139,10 @@ ParamModel::ParamType	CliApp::paramType( const QString& name )
 }
 void	CliApp::setParamValue( const QString& name, const QVariant& value )
 {
+	if( !_param.contains( name ) ) {
+		qWarning() << "INVALID PARAM NAME " << name;
+		return;
+	}
 	_param[ name ]->setValue( value );
 }
 bool	CliApp::hasParam( const QString& name ) const

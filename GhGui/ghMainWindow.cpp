@@ -152,19 +152,28 @@ void	MainWindow::help()
 			_helpText = "Sorry but no help is available";
 		}
 		QGridLayout	*lay = new QGridLayout;
-		QScrollArea	*sa = new QScrollArea;
-		QLabel		*lbl = new QLabel;
+		//QScrollArea	*sa = new QScrollArea;
+		//QLabel		*lbl = new QLabel;
 		_helpWidget = NonModalWindow( this );
 		QPushButton	*closeButton =
 		 new QPushButton( "Close", _helpWidget );
 
+		QTextEdit	*tb = new QTextEdit( this );
+		tb->setHtml( _helpText );
+		tb->setLineWrapMode( QTextEdit::WidgetWidth );
+		tb->setWordWrapMode( QTextOption::WordWrap );
+
+		lay->addWidget( tb, 0, 0, 1, 4 );
+
 		_helpWidget->setLayout( lay );
 		_helpWidget->setObjectName( "HelpWidget" );
 
+/*
 		lbl->setText( _helpText );
 		lbl->setWordWrap( true );
 		sa->setWidget( lbl );
 		lay->addWidget( sa, 0, 0, 1, 4 );
+*/
 		lay->addWidget( closeButton, 1, 3, 1, 1 );
 
 		connect( closeButton, SIGNAL( pressed() ),

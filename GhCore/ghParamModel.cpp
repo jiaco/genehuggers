@@ -182,6 +182,14 @@ QString	ParamModel::configString( const QString& key ) const
 {
 	return( S( config( key ) ) );
 }
+void	ParamModel::setToolTip( const QString& text )
+{
+	_config[ "toolTip" ] = text;
+}
+void	ParamModel::setWhatsThis( const QString& text )
+{
+	_config[ "whatsThis" ] = text;
+}
 QString	ParamModel::toolTip() const
 {
 	QString	rv;

@@ -82,6 +82,8 @@ public:
 	QVariant	config( const QString& key ) const;
 	QString		configString( const QString& key ) const;
 
+	void	setToolTip( const QString& text );
+	void	setWhatsThis( const QString& text );
 	QString	toolTip() const;
 	QString	whatsThis() const;
 

@@ -47,6 +47,19 @@ void	ToolButtonView::addAction( QAction *action )
 {
 	_menu->addAction( action );
 }
+QAction*	ToolButtonView::action() const
+{
+	return( _defaultAction );
+}
+QAction*	ToolButtonView::Action( QObject *parent, const QString& name )
+{
+	ToolButtonView	*p;
+
+	if( ( p = GetParam<ToolButtonView>( parent, name, className() ) ) == 0 ) {
+		return( 0 );
+	}
+	return( p->action() );
+}
 bool	ToolButtonView::AddAction( QObject *parent, const QString& name,
 	 QAction *action )
 {

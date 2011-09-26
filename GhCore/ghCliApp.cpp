@@ -109,6 +109,49 @@ void	CliApp::addParam( const QString& name, const QString& configText )
 {
 	addParam( name, new ParamModel( name, configText, this ) );
 }
+bool	CliApp::loadParamHelp( const QString& path )
+{
+	Ifp	fp;
+	QString line;
+	QString pname, tooltip, whatsthis;
+
+	pname = tooltip = whatsthis = "";
+
+	if( !fp.open( path ) ) {
+		return( false );
+	}
+	while( nextLine( fp, line ) ) {
+		if( line.isEmpty() && !pname.isEmpty() ) {
+			setParamHelp( pname, tooltip, whatsthis );
+			pname = tooltip = whatsthis = "";
+		} else if( pname.isEmpty() ) {
+			int x = line.indexOf( ' ' );
+			pname = line.left( x );
+			tooltip = line.mid( x + 1 );
+		} else if( whatsthis.isEmpty() ) {
+			whatsthis = line.trimmed();
+		} else {
+			whatsthis += QString( " %1" ).arg( line.trimmed() );
+		}
+	}
+	if( !pname.isEmpty() ) {
+		setParamHelp( pname, tooltip, whatsthis );
+	}
+	fp.close();
+	return( true );
+}
+void	CliApp::setParamHelp( const QString& name,
+	 const QString& tooltip, const QString& whatsthis )
+{
+	if( _param.contains( name ) ) {
+		if( !tooltip.isEmpty() ) {
+			_param[ name ]->setToolTip( tooltip );
+		}
+		if( !whatsthis.isEmpty() ) {
+			_param[ name ]->setWhatsThis( whatsthis );
+		}
+	}
+}
 
 QStringList	CliApp::paramNames( const QString& subgroup ) const
 {

@@ -19,6 +19,9 @@ public:
 	static bool	AddAction( QObject* parent, const QString& name,
 			 QAction* action );
 
+	QAction*	action() const;
+	static QAction* Action( QObject* parent, const QString& name );
+
 	void	updateEnabled();
 	void	updateChecked();
 	void	updateCheckable() {};

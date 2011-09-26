@@ -40,6 +40,7 @@ void	MessageBox( const QString& text, const int& type )
 
 	_helpText = _aboutText = QString();
 	_helpWidget = _aboutWidget = 0;
+	_helpBrowser = 0;
 	_helpAction = _aboutAction = 0;
 	_whatsThisAction = _resetDefaultsAction = 0;
 
@@ -152,38 +153,51 @@ void	MainWindow::help()
 			_helpText = "Sorry but no help is available";
 		}
 		QGridLayout	*lay = new QGridLayout;
-		//QScrollArea	*sa = new QScrollArea;
-		//QLabel		*lbl = new QLabel;
 		_helpWidget = NonModalWindow( this );
 		QPushButton	*closeButton =
 		 new QPushButton( "Close", _helpWidget );
+		QPushButton	*printButton =
+		 new QPushButton( "Print", _helpWidget );
 
-		QTextEdit	*tb = new QTextEdit( this );
-		tb->setHtml( _helpText );
-		tb->setLineWrapMode( QTextEdit::WidgetWidth );
-		tb->setWordWrapMode( QTextOption::WordWrap );
+		_helpBrowser = new QTextBrowser( this );
+		_helpBrowser->setReadOnly( true );
+		_helpBrowser->setHtml( _helpText );
 
-		lay->addWidget( tb, 0, 0, 1, 4 );
+		lay->addWidget( _helpBrowser, 0, 0, 1, 4 );
 
 		_helpWidget->setLayout( lay );
 		_helpWidget->setObjectName( "HelpWidget" );
 
-/*
-		lbl->setText( _helpText );
-		lbl->setWordWrap( true );
-		sa->setWidget( lbl );
-		lay->addWidget( sa, 0, 0, 1, 4 );
-*/
+		lay->addWidget( printButton, 1, 2, 1, 1 );
 		lay->addWidget( closeButton, 1, 3, 1, 1 );
 
 		connect( closeButton, SIGNAL( pressed() ),
 		 this, SLOT( help() ) );
+		connect( printButton, SIGNAL( pressed() ),
+		 this, SLOT( printHelp() ) );
 	}
 	if( _helpWidget->isVisible() ) {
 		_helpWidget->hide();
 	} else {
 		_helpWidget->show();
 	}
+}
+void	MainWindow::printHelp()
+{
+	if( !_helpWidget ) {
+		return;
+	}
+	QPrinter	printer;
+
+	QPrintDialog	*printDialog = new QPrintDialog( &printer, this );
+	printDialog->setWindowTitle( tr( "Print Help Page" ) );
+	if( _helpBrowser->textCursor().hasSelection() ) {
+		printDialog->addEnabledOption( QAbstractPrintDialog::PrintSelection );
+	}
+	if( printDialog->exec() != QDialog::Accepted ) {
+		return;
+	}
+	_helpBrowser->print( &printer );
 }
 void	MainWindow::about()
 {

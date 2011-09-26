@@ -60,6 +60,7 @@ public slots:
 	void	showMessage( Error* error );
 
 	void	help();
+	void	printHelp();
 	void	whatsThis();
 	void	about();
 signals:
@@ -97,6 +98,7 @@ private:
 	QWidget		*_helpWidget;
 	QWidget		*_aboutWidget;
 	QString		_helpText;
+	QTextBrowser	*_helpBrowser;
 	QString		_aboutText;
 };
 }	//	GH namespace

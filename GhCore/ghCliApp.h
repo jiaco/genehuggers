@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include "ghErrorprone.h"
 #include "ghParamModel.h"
+#include "ghIfp.h"
 
 namespace	GH
 {
@@ -55,6 +56,9 @@ public:
 		 const QString& displayName = QString(),
 		 const QString& configText = QString() );
 
+	void	setParamHelp( const QString& name, const QString& tooltip,
+		 const QString& whatsthis );
+
 	bool	isGui() const;
 	QString arg0() const;
 	QString	arg( const QString& name ) const;
@@ -63,6 +67,8 @@ public:
 	void	passInfo( const QString& text ) const;
 	void	showError() const;
 	void	setRequiredParamNames( const QStringList& names );
+	bool	loadParamHelp( const QString& path );
+
 public slots:
 	void	resetDefaults();
 signals:

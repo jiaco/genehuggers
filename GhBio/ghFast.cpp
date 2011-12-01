@@ -27,16 +27,27 @@ bool	nextQual( Ifp& fp, Qual& qual )
 	if( !nextLine( fp, line ) ) {
 		return( false );
 	}
-	if( !line.startsWith( ">" ) ) {
+	if( !line.startsWith( '>' ) ) {
 		return( false );
 	}
 	qual.sid = line.mid( 1 );
+	while( tok.next( fp ) ) {
+		if( tok.line().startsWith( '>' ) ) {
+			fp.back();
+			break;
+		}
+		foreach( QString t, tok ) {
+			qual << t.toInt();
+		}
+	}
+/*	changed to handle multi-line qual values
 	if( !tok.next( fp ) ) {
 		return( false );
 	}
 	foreach( QString t, tok ) {
 		qual << t.toInt();
 	}
+*/
 	return( true );
 }
 	Fast::Fast( const QString& seq, const QString& sid )

@@ -95,7 +95,7 @@ bool    Bed::isValidHeader( const QStringList& hdr, QMap<QString,int>& idx )
 	labelTypes << "#geneName" << "geneName" << "name" << "label";
 	valTypes << "val" << "score";
 
-	optional << "exonStarts" << "exonEnds";
+	optional << "exonStarts" << "exonEnds" << "cdsStart" << "cdsEnd";
 
         idx.clear();
 

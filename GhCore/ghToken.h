@@ -18,6 +18,7 @@ public:
 	bool	next( Ifp& fp );
 	Token	split( const QString& s );
 	QString	operator[]( const QString& hkey ) const;
+	QString	operator[]( const int& hidx ) const;
 
 	static	Token	load( const QString& path );
 	static	Token	loadHeaderResource( const QString& type );

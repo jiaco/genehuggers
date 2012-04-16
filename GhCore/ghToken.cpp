@@ -73,6 +73,13 @@ void	Token::attachHeader( const QStringList& hdr )
 	_hdr = hdr;
 }
 */
+QString Token::operator[]( const int& hidx ) const
+{
+	if( hidx >= 0 && hidx < size() ) {
+		return( at( hidx ) );
+	}
+	return( QString() );
+}
 QString	Token::operator[]( const QString& hkey ) const
 {
 	if( !_hdr.isEmpty() ) {
